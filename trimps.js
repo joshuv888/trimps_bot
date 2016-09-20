@@ -505,7 +505,7 @@ function createMyMap(goIn) {
 				if (game.global.world == target) {
 					targetMapCycle = game.stats.mapsCleared.value + 10;
 				} else {
-					targetMapCycle = Math.min(game.stats.mapsCleared.value + game.global.world, game.stats.mapsCleared.value + 50);
+					targetMapCycle = 20;
 				}
 			} else {
 				if (game.global.world < (target * 1 / 2)) {
