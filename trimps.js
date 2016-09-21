@@ -121,10 +121,10 @@ var mainLoop = function () {
 		if (Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.trimps.employed > 0) {
 			game.global.buyAmt = 1;
 			var training = false;
-			var buildTrainers = (game.jobs['Trainer'].owned < ((game.jobs['Farmer'].owned - (game.jobs['Farmer'].owned % 4)) / 4) && !game.jobs.Trainer.locked);
-			var buildExplorers = (game.jobs['Explorer'].owned < ((game.jobs['Farmer'].owned - (game.jobs['Farmer'].owned % 8)) / 8) && !game.jobs.Explorer.locked);
-			var buildScientists = (game.jobs['Scientist'].owned < ((game.jobs['Farmer'].owned - (game.jobs['Farmer'].owned % 4)) / 4) && game.jobs['Scientist'].owned < 500 && !game.jobs.Scientist.locked);
-			var buildGeneticists = (game.jobs['Geneticist'].owned < ((game.jobs['Farmer'].owned - (game.jobs['Farmer'].owned % 8)) / 8) && game.jobs['Geneticist'].owned < 100 && !game.jobs.Geneticist.locked);
+			var buildTrainers = (game.jobs['Trainer'].owned < ((game.jobs['Farmer'].owned - (game.jobs['Farmer'].owned % 4)) / 4) && game.jobs['Trainer'].owned < (game.global.world * 10) && !game.jobs.Trainer.locked);
+			var buildExplorers = (game.jobs['Explorer'].owned < ((game.jobs['Farmer'].owned - (game.jobs['Farmer'].owned % 8)) / 8) && game.jobs['Explorer'].owned < (game.global.world * 10) && !game.jobs.Explorer.locked);
+			var buildScientists = (game.jobs['Scientist'].owned < ((game.jobs['Farmer'].owned - (game.jobs['Farmer'].owned % 4)) / 4) && game.jobs['Scientist'].owned < (game.global.world * 10) && !game.jobs.Scientist.locked);
+			var buildGeneticists = (game.jobs['Geneticist'].owned < ((game.jobs['Farmer'].owned - (game.jobs['Farmer'].owned % 8)) / 8) && game.jobs['Geneticist'].owned < (game.global.world * 2) && !game.jobs.Geneticist.locked);
 
 			if (buildGeneticists && canAffordJob('Geneticist')) {
 				buyJob('Geneticist');
