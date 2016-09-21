@@ -435,8 +435,10 @@ function waitForMapToComplete() {
 	}
 }
 
-function calculateMapCost(biome,loot,difficulty) {
+
+function calculateMapCost(biome,loot,difficulty,size) {
 	var baseCost = game.global.world;
+	baseCost += size;
 	baseCost += (loot * 2);
 	baseCost += Math.floor(difficulty * 1.5);
 	baseCost = Math.floor((baseCost / 4) + (Math.pow(1.15, baseCost - 1)));
@@ -458,9 +460,10 @@ function createMyMap(goIn) {
 	document.getElementById("biomeAdvMapsSelect").value = "Mountain";
 	var loot = 0;
 	var difficulty = 0;
+	var size = 0;
 
 	for (var i = 0;i < 10;i++) {
-		if (calculateMapCost("Mountain",i,difficulty) < game.resources.fragments.owned) {
+		if (calculateMapCost("Mountain",i,difficulty,size) < game.resources.fragments.owned) {
 			loot = i;
 		}
 	}
@@ -468,16 +471,22 @@ function createMyMap(goIn) {
 	document.getElementById("lootAdvMapsRange").value = loot;
 
 	for (var i = 0;i < 10;i++) {
-		if (calculateMapCost("Mountain",loot,i) <= game.resources.fragments.owned) {
+		if (calculateMapCost("Mountain",loot,i,size) <= game.resources.fragments.owned) {
 			difficulty = i;
 		}
 	}
 
 	document.getElementById("difficultyAdvMapsRange").value = difficulty;
 
-	document.getElementById("sizeAdvMapsRange").value = 0;
+	for (var i = 0;i < 10;i++) {
+		if (calculateMapCost("Mountain",loot,difficulty,i) <= game.resources.fragments.owned) {
+			size = i;
+		}
+	}
 
-	if (calculateMapCost("Mountain",0,0) > game.resources.fragments.owned) {
+	document.getElementById("sizeAdvMapsRange").value = size;
+
+	if (calculateMapCost("Mountain",0,0,0) > game.resources.fragments.owned) {
 		setTimeout(function() {
 			createMyMap(true)
 		}, 1000);
@@ -505,7 +514,7 @@ function createMyMap(goIn) {
 				if (game.global.world == target) {
 					targetMapCycle = game.stats.mapsCleared.value + 10;
 				} else {
-					targetMapCycle = 20;
+					targetMapCycle = game.stats.mapsCleared.value + 20;
 				}
 			} else {
 				if (game.global.world < (target * 1 / 2)) {
