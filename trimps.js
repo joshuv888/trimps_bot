@@ -435,7 +435,6 @@ function waitForMapToComplete() {
 	}
 }
 
-
 function calculateMapCost(biome,loot,difficulty,size) {
 	var baseCost = game.global.world;
 	baseCost += size;
@@ -495,7 +494,7 @@ function createMyMap(goIn) {
 
 		buyMap();
 
-		console.log("Doing Map with loot:", loot, "and difficulty:", difficulty, "on zone:", game.global.world);
+		console.log("Doing Map on zone:", game.global.world);
 
 		var map = game.global.mapsOwnedArray[0];
 		var map_id = map.id;
