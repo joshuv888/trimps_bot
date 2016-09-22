@@ -485,6 +485,8 @@ function createMyMap(goIn) {
 
 	document.getElementById("sizeAdvMapsRange").value = size;
 
+	updateMapCost();
+
 	if (calculateMapCost("Mountain",0,0,0) > game.resources.fragments.owned) {
 		setTimeout(function() {
 			createMyMap(true)
@@ -513,14 +515,10 @@ function createMyMap(goIn) {
 				if (game.global.world == target) {
 					targetMapCycle = game.stats.mapsCleared.value + 10;
 				} else {
-					targetMapCycle = game.stats.mapsCleared.value + 20;
+					targetMapCycle = game.stats.mapsCleared.value + 30;
 				}
 			} else {
-				if (game.global.world < (target * 1 / 2)) {
-					targetMapCycle = game.stats.mapsCleared.value + 5;
-				} else {
-					targetMapCycle = game.stats.mapsCleared.value + 10;
-				}
+				targetMapCycle = game.stats.mapsCleared.value + 10;
 			}
 			setTimeout(function() {
 				repeatCurrentMap(true);
