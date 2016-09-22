@@ -462,7 +462,7 @@ function createMyMap(goIn) {
 	var size = 0;
 
 	for (var i = 0;i < 10;i++) {
-		if (calculateMapCost("Mountain",i,difficulty,size) < game.resources.fragments.owned) {
+		if (calculateMapCost("Mountain",i,0,0) < game.resources.fragments.owned) {
 			loot = i;
 		}
 	}
@@ -470,7 +470,7 @@ function createMyMap(goIn) {
 	document.getElementById("lootAdvMapsRange").value = loot;
 
 	for (var i = 0;i < 10;i++) {
-		if (calculateMapCost("Mountain",loot,i,size) <= game.resources.fragments.owned) {
+		if (calculateMapCost("Mountain",loot,i,0) <= game.resources.fragments.owned) {
 			difficulty = i;
 		}
 	}
