@@ -3,6 +3,7 @@ var jobsBot = true
 var lvl = game.global.world;
 var uniqueMaps = [];
 var targetMapCycle = 0;
+var nextChallenge = undefined;
 
 for (var i = 0;i < game.global.mapsOwnedArray.length;i++) {
 	if (uniqueMaps.indexOf(game.global.mapsOwnedArray[i].id) == -1 && game.global.mapsOwnedArray[i].level < game.global.world + 2) {
@@ -26,6 +27,8 @@ challengeSelection[63] = 'Trimp';
 challengeSelection[70] = 'Trapper';
 var Electricity = Array(40).fill('Electricity');
 challengeSelection = challengeSelection.concat(Electricity);
+challengeSelection[91] = 'Scientist';
+challengeSelection[101] = 'Frugal';
 
 function autoTrapToggled() {
 	if (game.global.trapBuildToggled) {
@@ -203,7 +206,7 @@ var mainLoop = function () {
 	/*  EQUIPMENT  */
 	/* *********** */
 
-	var equipmentMaxLvl = (game.global.challengeActive == "Trimp") ? 100 : 10;
+	var equipmentMaxLvl = (game.global.challengeActive == "Trimp" || game.global.challengeActive == "Frugal") ? 100 : 10;
 
 	if ((game.upgrades.Miners.done && game.upgrades.Speedminer.locked) || game.upgrades.Miners.locked) {
 		for (equipment in game.equipment) {
@@ -280,7 +283,9 @@ function waitForTrapsorm() {
 		}, 5000);
 	} else {
 		// Turn auto trap on
-		toggleAutoTrap();
+		if (!game.global.trapBuildToggled) {
+			toggleAutoTrap();
+		}
 	}
 }
 
@@ -300,11 +305,16 @@ function autoAttack() {
 }
 
 function selectMyChallenge() {
-	if (challengeSelection[target]) {
-		selectChallenge(challengeSelection[target]);
+	if (nextChallenge) {
+		selectChallenge(nextChallenge);
 	} else {
-		selectChallenge(0);
+		if (challengeSelection[target]) {
+			selectChallenge(challengeSelection[target]);
+		} else {
+			selectChallenge(0);
+		}
 	}
+	nextChallenge = undefined;
 	activateClicked();
 	//if (confirm("Does it look alright?")) {
 		activatePortal();
