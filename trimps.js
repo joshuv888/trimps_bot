@@ -373,12 +373,15 @@ function portalOut() {
 /*  UNIQUE MAPS  */
 /* ************* */
 
-function waitForUniqueMapToComplete() {
+function waitForUniqueMapToComplete(timeout) {
+	if (Date.now() > timeout) {
+		mapsSwitch();
+	}
 	if (!game.global.mapsActive) {
 		mapsSwitch();
 	} else {
 		setTimeout(function(){
-			waitForUniqueMapToComplete();
+			waitForUniqueMapToComplete(timeout);
 		}, 500);
 	}
 }
@@ -404,7 +407,7 @@ function checkForUniqueMaps() {
 			runMap();
 			repeatCurrentMap(false);
 			setTimeout(function(){
-				waitForUniqueMapToComplete();
+				waitForUniqueMapToComplete(Date.now() + 300000);
 			}, 500);
 		}, 500);
 	} else if (void_id) {
@@ -413,7 +416,7 @@ function checkForUniqueMaps() {
 			runMap();
 			repeatCurrentMap(false);
 			setTimeout(function(){
-				waitForUniqueMapToComplete();
+				waitForUniqueMapToComplete(Date.now() + 300000);
 			}, 500);
 		}, 500);
 	} else {
