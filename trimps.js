@@ -315,58 +315,57 @@ function selectMyChallenge() {
 		}
 	}
 	nextChallenge = undefined;
-	activateClicked();
-	//if (confirm("Does it look alright?")) {
-		activatePortal();
-	//}	
 }
 
 var boughtSomething;
 
 function getCheapestAbility() {
-	var tempHability;
-	do {
-		tempHability = 'Power';
-		for (habilidad in game.portal) {
-			if (game.portal.hasOwnProperty(habilidad) && !(game.portal[habilidad].locked) && (game.portal[habilidad].level < game.portal[habilidad].max || !game.portal[habilidad].max)) {
-				if (getPortalUpgradePrice(habilidad) < getPortalUpgradePrice(tempHability)) {
-					tempHability = habilidad;
-				}
+	var tempHability = 'Power';
+	for (habilidad in game.portal) {
+		if (game.portal.hasOwnProperty(habilidad) && !(game.portal[habilidad].locked) && (game.portal[habilidad].level + game.portal[habilidad].levelTemp < game.portal[habilidad].max || !game.portal[habilidad].max)) {
+			if (getPortalUpgradePrice(habilidad) < getPortalUpgradePrice(tempHability)) {
+				tempHability = habilidad;
 			}
 		}
-		
-		if (getPortalUpgradePrice(tempHability) <= (game.resources.helium.owned - game.resources.helium.totalSpentTemp)) {
-			buyPortalUpgrade(tempHability);
-			boughtSomething = true;
-		} else {
-			boughtSomething = false;
-		}
-	} while (boughtSomething);
+	}
+	
+	if (getPortalUpgradePrice(tempHability) <= (game.resources.helium.owned - game.resources.helium.totalSpentTemp)) {
+		buyPortalUpgrade(tempHability);
+		setTimeout(function(){
+			getCheapestAbility();
+		}, 10);
+	} else {
+		setTimeout(function(){
+			activateClicked();
+			//if (confirm("Does it look alright?")) {
+				activatePortal();
+			//}	
+			mainLoop();
+			gotoMaps();
+			autoAttack();
+			waitForTrapsorm();
+			target = 22 + game.global.totalPortals;
+			console.clear()
+			console.log("Portal #", game.global.totalPortals);
+			console.log("Target lvl to portal next #", target);
+			if (challengeSelection[target-1]) {
+				console.log("Doing Challenge:",challengeSelection[target-1]);
+			}
+			if (game.global.b > 19) {
+				purchaseMisc('maps');
+			}
+		}, 1000);
+	}
 }
 
 function portalOut() {
+	game.global.trapBuildToggled = false
 	lvl = 1;
 	pauseBot = false;
 	uniqueMaps = [];
 	portalClicked();
-	getCheapestAbility();
 	selectMyChallenge();
-	setTimeout(function(){
-		mainLoop();
-		gotoMaps();
-		autoAttack();
-		waitForTrapsorm();
-		target = 22 + game.global.totalPortals;
-		console.clear()
-		console.log("Portal #", game.global.totalPortals);
-		console.log("Target lvl to portal next #", target);
-		if (challengeSelection[target-1]) {
-			console.log("Doing Challenge:",challengeSelection[target-1]);
-		}
-		if (game.global.b > 19) {
-			purchaseMisc('maps');
-		}
-	}, 1000);
+	getCheapestAbility();
 }
 
 /* ************* */
@@ -407,7 +406,7 @@ function checkForUniqueMaps() {
 			runMap();
 			repeatCurrentMap(false);
 			setTimeout(function(){
-				waitForUniqueMapToComplete(Date.now() + 300000);
+				waitForUniqueMapToComplete(Date.now() + 600000);
 			}, 500);
 		}, 500);
 	} else if (void_id) {
