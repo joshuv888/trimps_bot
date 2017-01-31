@@ -329,7 +329,7 @@ function getCheapestAbility() {
 		}
 	}
 	
-	if (getPortalUpgradePrice(tempHability) <= (game.resources.helium.owned - game.resources.helium.totalSpentTemp)) {
+	if (getPortalUpgradePrice(tempHability) <= (game.resources.helium.respecMax - game.resources.helium.totalSpentTemp)) {
 		buyPortalUpgrade(tempHability);
 		setTimeout(function(){
 			getCheapestAbility();
