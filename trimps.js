@@ -39,7 +39,7 @@ function autoTrapToggled() {
 }
 
 var cursorMe = function () {
-	if (!game.upgrades.Miners.done || game.global.world < 5 || !game.upgrades.Bloodlust.done) {
+	if (!game.upgrades.Miners.done || game.global.world < 9 || !game.upgrades.Bloodlust.done) {
 		if (game.resources.food.owned < 10) {
 			setGather('food');
 		} else if (game.resources.wood.owned < 10) {
