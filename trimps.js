@@ -95,6 +95,10 @@ var cursorMe = function () {
 	}
 	//game.resources.trimps.owned = game.resources.trimps.max;
 
+	if (game.global.radioStacks > 0) {
+		game.global.radioStacks = 0;
+	}
+
 	setTimeout(function(){
 		cursorMe();
 	}, 100);
