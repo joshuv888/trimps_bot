@@ -114,9 +114,17 @@ var mainLoop = function () {
 		setFormation(2);
 	}
 
+	let houses = ['Hut','House','Mansion','Hotel','Resort','Gateway','Collector']
+
 	for (var i = 0;i < buildings.length;i++) {
 		if (!game.buildings[buildings[i]].locked) {
-			buyBuilding(buildings[i]);
+			if (houses.indexOf(buildings[i]) == -1) {
+				buyBuilding(buildings[i]); 
+			} else {
+				if (game.buildings[buildings[i]].owned < 101) {
+					buyBuilding(buildings[i]);
+				}
+			}
 		}
 	}
 
