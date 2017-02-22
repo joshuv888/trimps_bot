@@ -121,7 +121,7 @@ var mainLoop = function () {
 			if (houses.indexOf(buildings[i]) == -1) {
 				buyBuilding(buildings[i]); 
 			} else {
-				if (game.buildings[buildings[i]].owned < 101) {
+				if (game.buildings[buildings[i]].owned < 100) {
 					buyBuilding(buildings[i]);
 				}
 			}
