@@ -15,20 +15,26 @@ for (var i = 0;i < game.global.mapsOwnedArray.length;i++) {
 
 var target = 22 + game.global.totalPortals;
 var challengeSelection = Array(40).fill(0);
+var Balance = Array(40).fill('Balance');
+challengeSelection = challengeSelection.concat(Balance);
+var Electricity = Array(50).fill('Electricity');
+challengeSelection = challengeSelection.concat(Electricity);
+var Crushed = Array(50).fill('Crushed');
+challengeSelection = challengeSelection.concat(Crushed);
+
 challengeSelection[22] = 'Discipline';
 challengeSelection[25] = 'Metal';
 challengeSelection[35] = 'Size';
-var Balance = Array(40).fill('Balance');
-challengeSelection = challengeSelection.concat(Balance);
 challengeSelection[41] = 'Scientist';
 challengeSelection[45] = 'Meditate';
 challengeSelection[55] = 'Scientist';
 challengeSelection[63] = 'Trimp';
 challengeSelection[70] = 'Trapper';
-var Electricity = Array(40).fill('Electricity');
-challengeSelection = challengeSelection.concat(Electricity);
 challengeSelection[91] = 'Scientist';
 challengeSelection[101] = 'Frugal';
+challengeSelection[121] = 'Coordinate';
+challengeSelection[131] = 'Scientist';
+challengeSelection[132] = 'Slow';
 
 function autoTrapToggled() {
 	if (game.global.trapBuildToggled) {
@@ -535,15 +541,16 @@ function createMyMap(goIn) {
 
 		if (goIn) {
 			runMap();
-			if (game.global.world > (target * 3 / 4)) {
-				if (game.global.world == target) {
-					targetMapCycle = game.stats.mapsCleared.value + 10;
-				} else {
-					targetMapCycle = game.stats.mapsCleared.value + 30;
-				}
-			} else {
-				targetMapCycle = game.stats.mapsCleared.value + 10;
-			}
+			// if (game.global.world > 100) {
+			// 	if (game.global.world == target) {
+			// 		targetMapCycle = game.stats.mapsCleared.value + 10;
+			// 	} else {
+			// 		targetMapCycle = game.stats.mapsCleared.value + 30;
+			// 	}
+			// } else {
+			// 	targetMapCycle = game.stats.mapsCleared.value + 10;
+			// }
+			targetMapCycle = game.stats.mapsCleared.value + 10;
 			setTimeout(function() {
 				repeatCurrentMap(true);
 				waitForMapCycle();
