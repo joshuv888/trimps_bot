@@ -13,7 +13,7 @@ for (var i = 0;i < game.global.mapsOwnedArray.length;i++) {
 	}
 }
 
-var target = 22 + game.global.totalPortals;
+var target = 30 + game.global.totalPortals;
 var challengeSelection = Array(40).fill(0);
 var Balance = Array(40).fill('Balance');
 challengeSelection = challengeSelection.concat(Balance);
@@ -22,8 +22,8 @@ challengeSelection = challengeSelection.concat(Electricity);
 var Crushed = Array(50).fill('Crushed');
 challengeSelection = challengeSelection.concat(Crushed);
 
-challengeSelection[22] = 'Discipline';
-challengeSelection[25] = 'Metal';
+challengeSelection[32] = 'Discipline';
+challengeSelection[33] = 'Metal';
 challengeSelection[35] = 'Size';
 challengeSelection[41] = 'Scientist';
 challengeSelection[45] = 'Meditate';
