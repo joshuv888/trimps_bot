@@ -225,17 +225,31 @@ function jobLoop() {
 				var unemp = (Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.trimps.employed);
 
 				if (game.jobs['Lumberjack'].owned < game.jobs['Farmer'].owned && !game.jobs['Lumberjack'].locked && unemp > 0 && canAffordJob('Lumberjack')) {
-					game.global.buyAmt = (unemp > (game.jobs['Farmer'].owned - game.jobs['Lumberjack'].owne)) ? (game.jobs['Farmer'].owned - game.jobs['Lumberjack'].owne) : unemp;
+					game.global.buyAmt = (unemp > (game.jobs['Farmer'].owned - game.jobs['Lumberjack'].owned)) ? (game.jobs['Farmer'].owned - game.jobs['Lumberjack'].owned) : unemp;
 					buyJob('Lumberjack');
 					unemp = (Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.trimps.employed);
 					game.global.buyAmt = 1;
 				}
 
-				if (game.jobs['Miner'].owned < game.jobs['Lumberjack'].owned && !game.jobs['Miner'].locked && unemp > 0 && canAffordJob('Miner')) {
-					game.global.buyAmt = (unemp > (game.jobs['Lumberjack'].owned - game.jobs['Miner'].owne)) ? (game.jobs['Lumberjack'].owned - game.jobs['Miner'].owne) : unemp;
+				unemp = (Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.trimps.employed);
+
+				if (game.jobs['Miner'].owned < game.jobs['Farmer'].owned && !game.jobs['Miner'].locked && unemp > 0 && canAffordJob('Miner')) {
+					game.global.buyAmt = (unemp > (game.jobs['Farmer'].owned - game.jobs['Miner'].owned)) ? (game.jobs['Farmer'].owned - game.jobs['Miner'].owned) : unemp;
 					buyJob('Miner');
 					unemp = (Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.trimps.employed);
+					game.global.buyAmt = 1;
 				}
+
+				unemp = (Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.trimps.employed);
+
+				if (game.jobs['Farmer'].owned < game.jobs['Lumberjack'].owned && !game.jobs['Farmer'].locked && unemp > 0 && canAffordJob('Farmer')) {
+					game.global.buyAmt = (unemp > (game.jobs['Lumberjack'].owned - game.jobs['Farmer'].owned)) ? (game.jobs['Lumberjack'].owned - game.jobs['Farmer'].owned) : unemp;
+					buyJob('Farmer');
+					unemp = (Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.trimps.employed);
+					game.global.buyAmt = 1;
+				}
+
+				unemp = (Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.trimps.employed);
 
 				if (unemp >= (3 - game.jobs['Lumberjack'].locked - game.jobs['Miner'].locked)) {
 					if (game.global.world == 1) {
@@ -320,9 +334,11 @@ function waitForTrapsorm() {
 
 function autoAttack() {
 	if (game.upgrades.Bloodlust.done) {
-		setTimeout(function(){
-			pauseFight();
-		}, 500);
+		if (game.global.pauseFight) {
+			setTimeout(function(){
+				pauseFight();
+			}, 500);
+		}
 	} else {
 		if (game.upgrades.Battle.done) {
 			fightManual();
@@ -383,6 +399,7 @@ function getCheapestAbility() {
 			if (game.global.b > 19) {
 				purchaseMisc('maps');
 			}
+			game.global.playerModifier = Math.pow(2,50);
 		}, 1000);
 	}
 }
@@ -487,7 +504,7 @@ function calculateMapCost(biome,loot,difficulty,size) {
 }
 
 function waitForMapCycle() {
-	if (targetMapCycle == (game.stats.mapsCleared.value + 1)) {
+	if (targetMapCycle <= (game.stats.mapsCleared.value + 1)) {
 		repeatCurrentMap(false);
 	} else {
 		setTimeout(function() {
