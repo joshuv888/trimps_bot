@@ -362,7 +362,7 @@ function getCheapestAbility() {
 			gotoMaps();
 			autoAttack();
 			waitForTrapsorm();
-			target = 22 + game.global.totalPortals;
+			target = 31 + game.global.totalPortals;
 			console.clear()
 			console.log("Portal #", game.global.totalPortals);
 			console.log("Target lvl to portal next #", target);
