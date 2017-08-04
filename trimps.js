@@ -1,5 +1,5 @@
 var pauseBot = false;
-var jobsBot = true
+var jobsBot = true;
 var lvl = game.global.world;
 var uniqueMaps = [];
 var targetMapCycle = 0;
@@ -134,75 +134,6 @@ var mainLoop = function () {
 		}
 	}
 
-	/* ****** */
-	/*  JOBS  */
-	/* ****** */
-	if (jobsBot && !game.global.firing) {
-
-		if (Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.trimps.employed > 0) {
-			game.global.buyAmt = 1;
-			var training = false;
-			var buildTrainers = (game.jobs['Trainer'].owned < ((game.jobs['Farmer'].owned - (game.jobs['Farmer'].owned % 4)) / 4) && game.jobs['Trainer'].owned < (game.global.world * 10) && !game.jobs.Trainer.locked);
-			var buildExplorers = (game.jobs['Explorer'].owned < ((game.jobs['Farmer'].owned - (game.jobs['Farmer'].owned % 8)) / 8) && game.jobs['Explorer'].owned < (game.global.world * 10) && !game.jobs.Explorer.locked);
-			var buildScientists = (game.jobs['Scientist'].owned < ((game.jobs['Farmer'].owned - (game.jobs['Farmer'].owned % 4)) / 4) && game.jobs['Scientist'].owned < (game.global.world * 10) && !game.jobs.Scientist.locked);
-			var buildGeneticists = (game.jobs['Geneticist'].owned < ((game.jobs['Farmer'].owned - (game.jobs['Farmer'].owned % 8)) / 8) && game.jobs['Geneticist'].owned < (game.global.world * 2) && !game.jobs.Geneticist.locked);
-
-			if (buildGeneticists && canAffordJob('Geneticist')) {
-				buyJob('Geneticist');
-				training = true;
-			}
-
-			if (buildExplorers && canAffordJob('Explorer')) {
-				buyJob('Explorer');
-				training = true;
-			}
-
-			if (buildTrainers && canAffordJob('Trainer')) {
-				buyJob('Trainer');
-				training = true;
-			}
-
-			if (buildScientists && canAffordJob('Scientist')) {
-				buyJob('Scientist');
-				training = true;
-			}
-
-			if (!training) {
-				var unemp = (Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.trimps.employed);
-
-				while (game.jobs['Lumberjack'].owned < game.jobs['Farmer'].owned && !game.jobs['Lumberjack'].locked && unemp > 0 && canAffordJob('Lumberjack')) {
-					buyJob('Lumberjack');
-					unemp = (Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.trimps.employed);
-				}
-
-				while (game.jobs['Miner'].owned < game.jobs['Lumberjack'].owned && !game.jobs['Miner'].locked && unemp > 0 && canAffordJob('Miner')) {
-					buyJob('Miner');
-					unemp = (Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.trimps.employed);
-				}
-
-				if (unemp >= (3 - game.jobs['Lumberjack'].locked - game.jobs['Miner'].locked)) {
-					if (game.global.world == 1) {
-						game.global.buyAmt = 1;
-					} else {
-						game.global.buyAmt = (unemp - (unemp % (3 - game.jobs['Lumberjack'].locked - game.jobs['Miner'].locked))) / (3 - game.jobs['Lumberjack'].locked - game.jobs['Miner'].locked);
-					}
-
-					if (!game.jobs['Farmer'].locked) {
-						buyJob('Farmer');
-					}
-					if (!game.jobs['Lumberjack'].locked) {
-						buyJob('Lumberjack');
-					}
-					if (!game.jobs['Miner'].locked) {
-						buyJob('Miner');
-					}
-
-					game.global.buyAmt = 1;
-				}
-			}
-		}
-	}
-
 	/* ********** */
 	/*  UPGRADES  */
 	/* ********** */
@@ -252,6 +183,86 @@ var mainLoop = function () {
 	if (!pauseBot) {
 		setTimeout(function(){
 			mainLoop();
+		}, 300);
+	}
+}
+
+function jobLoop() {
+	/* ****** */
+	/*  JOBS  */
+	/* ****** */
+	if (jobsBot && !game.global.firing) {
+
+		if (Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.trimps.employed > 0) {
+			game.global.buyAmt = 1;
+			var training = false;
+			var buildTrainers = (game.jobs['Trainer'].owned < ((game.jobs['Farmer'].owned - (game.jobs['Farmer'].owned % 4)) / 4) && game.jobs['Trainer'].owned < (game.global.world * 10) && !game.jobs.Trainer.locked);
+			var buildExplorers = (game.jobs['Explorer'].owned < ((game.jobs['Farmer'].owned - (game.jobs['Farmer'].owned % 8)) / 8) && game.jobs['Explorer'].owned < (game.global.world * 10) && !game.jobs.Explorer.locked);
+			var buildScientists = (game.jobs['Scientist'].owned < ((game.jobs['Farmer'].owned - (game.jobs['Farmer'].owned % 4)) / 4) && game.jobs['Scientist'].owned < (game.global.world * 10) && !game.jobs.Scientist.locked);
+			var buildGeneticists = (game.jobs['Geneticist'].owned < ((game.jobs['Farmer'].owned - (game.jobs['Farmer'].owned % 8)) / 8) && game.jobs['Geneticist'].owned < (game.global.world * 2) && !game.jobs.Geneticist.locked);
+
+			if (buildGeneticists && canAffordJob('Geneticist')) {
+				buyJob('Geneticist');
+				training = true;
+			}
+
+			if (buildExplorers && canAffordJob('Explorer')) {
+				buyJob('Explorer');
+				training = true;
+			}
+
+			if (buildTrainers && canAffordJob('Trainer')) {
+				buyJob('Trainer');
+				training = true;
+			}
+
+			if (buildScientists && canAffordJob('Scientist')) {
+				buyJob('Scientist');
+				training = true;
+			}
+
+			if (!training) {
+				var unemp = (Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.trimps.employed);
+
+				if (game.jobs['Lumberjack'].owned < game.jobs['Farmer'].owned && !game.jobs['Lumberjack'].locked && unemp > 0 && canAffordJob('Lumberjack')) {
+					game.global.buyAmt = (unemp > (game.jobs['Farmer'].owned - game.jobs['Lumberjack'].owne)) ? (game.jobs['Farmer'].owned - game.jobs['Lumberjack'].owne) : unemp;
+					buyJob('Lumberjack');
+					unemp = (Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.trimps.employed);
+					game.global.buyAmt = 1;
+				}
+
+				if (game.jobs['Miner'].owned < game.jobs['Lumberjack'].owned && !game.jobs['Miner'].locked && unemp > 0 && canAffordJob('Miner')) {
+					game.global.buyAmt = (unemp > (game.jobs['Lumberjack'].owned - game.jobs['Miner'].owne)) ? (game.jobs['Lumberjack'].owned - game.jobs['Miner'].owne) : unemp;
+					buyJob('Miner');
+					unemp = (Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.trimps.employed);
+				}
+
+				if (unemp >= (3 - game.jobs['Lumberjack'].locked - game.jobs['Miner'].locked)) {
+					if (game.global.world == 1) {
+						game.global.buyAmt = 1;
+					} else {
+						game.global.buyAmt = (unemp - (unemp % (3 - game.jobs['Lumberjack'].locked - game.jobs['Miner'].locked))) / (3 - game.jobs['Lumberjack'].locked - game.jobs['Miner'].locked);
+					}
+
+					if (!game.jobs['Farmer'].locked) {
+						buyJob('Farmer');
+					}
+					if (!game.jobs['Lumberjack'].locked) {
+						buyJob('Lumberjack');
+					}
+					if (!game.jobs['Miner'].locked) {
+						buyJob('Miner');
+					}
+
+					game.global.buyAmt = 1;
+				}
+			}
+		}
+	}
+
+	if (jobsBot) {
+		setTimeout(function(){
+			jobLoop();
 		}, 300);
 	}
 }
@@ -592,4 +603,5 @@ function gotoMaps() {
 
 cursorMe();
 mainLoop();
+jobLoop();
 gotoMaps();
