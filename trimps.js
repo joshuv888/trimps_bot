@@ -4,6 +4,7 @@ var lvl = game.global.world;
 var uniqueMaps = [];
 var targetMapCycle = 0;
 var nextChallenge = undefined;
+var mapsPerRound = 10;
 
 for (var i = 0;i < game.global.mapsOwnedArray.length;i++) {
 	if (uniqueMaps.indexOf(game.global.mapsOwnedArray[i].id) == -1 && game.global.mapsOwnedArray[i].level < game.global.world + 2) {
@@ -583,7 +584,7 @@ function createMyMap(goIn) {
 			// } else {
 			// 	targetMapCycle = game.stats.mapsCleared.value + 10;
 			// }
-			targetMapCycle = game.stats.mapsCleared.value + 10;
+			targetMapCycle = game.stats.mapsCleared.value + mapsPerRound;
 			setTimeout(function() {
 				repeatCurrentMap(true);
 				waitForMapCycle();
