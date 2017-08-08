@@ -192,8 +192,9 @@ function jobLoop() {
 	/*  JOBS  */
 	/* ****** */
 	if (jobsBot && !game.global.firing) {
+		var unemp = (Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.trimps.employed);
 
-		if (Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.trimps.employed > 0) {
+		if (unemp > 0) {
 			game.global.buyAmt = 1;
 			var training = false;
 			var buildTrainers = (game.jobs['Trainer'].owned < ((game.jobs['Farmer'].owned - (game.jobs['Farmer'].owned % 4)) / 4) && game.jobs['Trainer'].owned < (game.global.world * 10) && !game.jobs.Trainer.locked);
@@ -204,25 +205,29 @@ function jobLoop() {
 			if (buildGeneticists && canAffordJob('Geneticist')) {
 				buyJob('Geneticist');
 				training = true;
+				unemp--;
 			}
 
-			if (buildExplorers && canAffordJob('Explorer')) {
+			if (unemp > 0 && buildExplorers && canAffordJob('Explorer')) {
 				buyJob('Explorer');
 				training = true;
+				unemp--;
 			}
 
-			if (buildTrainers && canAffordJob('Trainer')) {
+			if (unemp > 0 && buildTrainers && canAffordJob('Trainer')) {
 				buyJob('Trainer');
 				training = true;
+				unemp--;
 			}
 
-			if (buildScientists && canAffordJob('Scientist')) {
+			if (unemp > 0 && buildScientists && canAffordJob('Scientist')) {
 				buyJob('Scientist');
 				training = true;
+				unemp--;
 			}
 
-			if (!training) {
-				var unemp = (Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.trimps.employed);
+			if (unemp > 0 && !training) {
+				unemp = (Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.trimps.employed);
 
 				if (game.jobs['Lumberjack'].owned < game.jobs['Farmer'].owned && !game.jobs['Lumberjack'].locked && unemp > 0 && canAffordJob('Lumberjack')) {
 					game.global.buyAmt = (unemp > (game.jobs['Farmer'].owned - game.jobs['Lumberjack'].owned)) ? (game.jobs['Farmer'].owned - game.jobs['Lumberjack'].owned) : unemp;
