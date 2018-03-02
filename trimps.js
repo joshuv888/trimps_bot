@@ -45,6 +45,16 @@ function autoTrapToggled() {
 	}
 }
 
+function reordenar() {
+	var resources = [];
+	resources.push({label:"food", valor:game.resources.food.owned});
+	resources.push({label:"wood", valor:game.resources.wood.owned});
+	resources.push({label:"metal", valor:game.resources.metal.owned});
+	resources.push({label:"science", valor:game.resources.science.owned});
+	resources.sort(function(a,b) {return a.valor - b.valor});
+	return resources[0].label;
+}
+
 var cursorMe = function () {
 	if (!game.upgrades.Miners.done || game.global.world < 9 || !game.upgrades.Bloodlust.done) {
 		if (game.resources.food.owned < 10) {
@@ -75,11 +85,7 @@ var cursorMe = function () {
 					if (autoTrapToggled()) {
 						setGather('buildings')
 					} else {
-						if (game.resources.metal.owned < 300 && game.resources.science.owned > 100) {
-							setGather('metal');
-						} else {
-							setGather('science');
-						}
+						setGather(reordenar());
 					}
 				}
 			}
@@ -96,7 +102,7 @@ var cursorMe = function () {
 			if (autoTrapToggled()) {
 				setGather('buildings')
 			} else {
-				setGather('science');
+				setGather(reordenar());
 			}
 		}
 	}
